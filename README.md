@@ -4,9 +4,10 @@
 ![LedgerLift Screenshot](https://raw.githubusercontent.com/kodurishreyas/ledgerlift/main/ledgerlift.png)
 
 ![Screenshot 1](https://raw.githubusercontent.com/kodurishreyas/ledgerlift/main/ledgerlift1.png)
-## 📸 More Preview
 
 ![Screenshot 2](https://raw.githubusercontent.com/kodurishreyas/ledgerlift/main/ledgerlift2.png)
+
+![LedgerLift 3](https://raw.githubusercontent.com/kodurishreyas/ledgerlift/main/ledgerlift3.png)
 A polished personal finance tracker for anyone who wants a clearer, more interactive view of their money. Created by Koduri Shreyas.
 
 Open `index.html` in a browser to run the app locally, or use the public site at `https://ledgerlift.netlify.app/`. It works locally by default and can sync across devices when Supabase is configured.
