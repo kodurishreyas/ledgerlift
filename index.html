@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LedgerLift - Personal Finance Tracker</title>
+    <meta
+      name="description"
+      content="LedgerLift shows how long your money will survive with a cinematic runway dashboard, smart warnings, goals, budgets, and fast expense tracking."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="application-name" content="LedgerLift" />
+    <meta name="theme-color" content="#6366f1" />
+    <link rel="canonical" href="https://ledgerlift.netlify.app/" />
+    <meta property="og:title" content="LedgerLift - Personal Finance Tracker" />
+    <meta
+      property="og:description"
+      content="See how long your money survives. Track runway, spending risk, goals, budgets, and what-if savings moves."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ledgerlift.netlify.app/" />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "LedgerLift",
+        "url": "https://ledgerlift.netlify.app/",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "description": "LedgerLift shows how long your money will survive with runway forecasting, spending alerts, goals, budgets, and what-if savings moves.",
+        "creator": {
+          "@type": "Person",
+          "name": "Koduri Shreyas"
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="app-loading">
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">LL</div>
+          <div>
+            <p>LedgerLift</p>
+            <span>Money survival dashboard</span>
+          </div>
+        </div>
+
+        <nav class="nav-list" aria-label="App sections">
+          <button class="nav-item is-active" data-view="overview" type="button">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-11h6V4h-6v5Z"/></svg>
+            </span>
+            Overview
+          </button>
+          <button class="nav-item" data-view="transactions" type="button">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 7h16v2H4V7Zm0 4h16v2H4v-2Zm0 4h10v2H4v-2Z"/></svg>
+            </span>
+            Transactions
+          </button>
+          <button class="nav-item" data-view="budgets" type="button">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10h-2a8 8 0 1 1-8-8V2Zm1 1v10h10A10 10 0 0 0 13 3Z"/></svg>
+            </span>
+            Budgets
+          </button>
+          <button class="nav-item" data-view="goals" type="button">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2 3 7v7c0 5 4 8 9 8s9-3 9-8V7l-9-5Zm0 2.3 7 3.9V14c0 3.8-2.8 6-7 6s-7-2.2-7-6V8.2l7-3.9Zm4.4 6.1L11 15.8l-2.9-2.9-1.4 1.4L11 18.6l6.8-6.8-1.4-1.4Z"/></svg>
+            </span>
+            Goals
+          </button>
+        </nav>
+
+        <div class="profile-card">
+          <div class="profile-orbit" aria-hidden="true"></div>
+          <p>See how long your money survives</p>
+          <strong>Created by Koduri Shreyas</strong>
+        </div>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" id="welcomeText">Welcome to LedgerLift</p>
+            <h1>See how long your money survives.</h1>
+          </div>
+          <div class="top-actions">
+            <button class="ghost-button" id="exportButton" type="button" title="Export transactions as CSV">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20h14v-2H5v2ZM13 4h-2v8.2L7.8 9 6.4 10.4 12 16l5.6-5.6L16.2 9 13 12.2V4Z"/></svg>
+              Export
+            </button>
+            <button class="ghost-button" id="backupButton" type="button" title="Download a full LedgerLift backup">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20h14v-2H5v2ZM19 9h-4V3H9v6H5l7 7 7-7Z"/></svg>
+              Backup
+            </button>
+            <button class="ghost-button" id="restoreButton" type="button" title="Restore a LedgerLift backup">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3h-2v8.2L7.8 8 6.4 9.4 12 15l5.6-5.6L16.2 8 13 11.2V3ZM5 20h14v-2H5v2Z"/></svg>
+              Restore
+            </button>
+            <button class="ghost-button" id="themeToggle" type="button" title="Toggle dark mode">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a1 1 0 0 1 1 1v1.2a1 1 0 1 1-2 0V4a1 1 0 0 1 1-1Zm0 14a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm8-6a1 1 0 0 1 1 1 1 1 0 0 1-1 1h-1.2a1 1 0 1 1 0-2H20ZM5.2 12a1 1 0 1 1 0 2H4a1 1 0 1 1 0-2h1.2Zm11.03 5.83a1 1 0 1 1 1.42-1.42l.85.85a1 1 0 0 1-1.42 1.42l-.85-.85Zm-9.31-9.31a1 1 0 1 1 1.42-1.42l.85.85A1 1 0 0 1 7.77 9.37l-.85-.85Zm9.31-1.42a1 1 0 0 1 1.42 0 1 1 0 0 1 0 1.42l-.85.85a1 1 0 0 1-1.42-1.42l.85-.85Zm-9.31 9.31a1 1 0 0 1 1.42 1.42l-.85.85a1 1 0 1 1-1.42-1.42l.85-.85Z"/></svg>
+              <span id="themeToggleLabel">Dark</span>
+            </button>
+            <button class="primary-button" id="quickAddButton" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z"/></svg>
+              Add
+            </button>
+            <input class="file-input" id="restoreInput" type="file" accept="application/json,.json" />
+          </div>
+        </header>
+        <section class="onboarding-panel" id="onboardingPanel" aria-label="LedgerLift onboarding">
+          <div>
+            <p class="section-label">Survival setup</p>
+            <h2>Find out when your money runs out in under a minute.</h2>
+            <p>Log one income and one expense. LedgerLift turns it into runway, risk, what-if moves, and a daily money survival snapshot.</p>
+          </div>
+          <div class="onboarding-steps">
+            <span>1. Add income</span>
+            <span>2. Log expense</span>
+            <span>3. Watch runway</span>
+          </div>
+          <button class="primary-button" id="startOnboardingButton" type="button">Start now</button>
+          <button class="ghost-button" id="dismissOnboardingButton" type="button">Hide</button>
+        </section>
+        <section class="streak-banner" aria-live="polite">
+          <div>
+            <p class="section-label">Consistency</p>
+            <strong id="streakCount">0 day streak</strong>
+          </div>
+          <small id="streakHint">Add one transaction daily to keep momentum.</small>
+        </section>
+        <section class="fun-banner" aria-live="polite">
+          <div>
+            <p class="section-label">Momentum game</p>
+            <strong id="xpLevel">Level 1 - 0 XP</strong>
+          </div>
+          <div class="xp-meter"><span id="xpMeter"></span></div>
+          <small id="xpHint">Add entries to level up.</small>
+        </section>
+        <section class="mission-board" aria-label="Daily finance mission">
+          <div>
+            <p class="section-label">Today Mission</p>
+            <strong id="missionTitle">Activate survival mode</strong>
+            <span id="missionText">Log one income, one expense, and reveal your runway.</span>
+          </div>
+          <div class="mission-ring" aria-hidden="true">
+            <span id="missionPercent">0%</span>
+          </div>
+          <div class="badge-strip" id="badgeStrip"></div>
+        </section>
+
+        <section class="view is-visible" id="overview" aria-label="Overview">
+          <section class="runway-hero" id="runwayHero" aria-live="polite">
+            <p class="section-label">Runway</p>
+            <h2><span id="runwayDays">0</span> days left</h2>
+            <p id="runwayLabel">Add transactions to calculate your spending runway.</p>
+            <div class="runway-pill" id="runwayTrend">Decision engine is warming up.</div>
+          </section>
+
+          <section class="survival-snapshot" aria-label="Shareable money survival snapshot">
+            <div>
+              <p class="section-label">Survival Snapshot</p>
+              <h2 id="snapshotTitle">How long will your money survive?</h2>
+              <p id="snapshotText">Add your first entries to generate a cinematic daily finance snapshot.</p>
+            </div>
+            <div class="snapshot-metrics">
+              <article>
+                <span>Runway</span>
+                <strong id="snapshotRunway">0d</strong>
+              </article>
+              <article>
+                <span>Shield</span>
+                <strong id="snapshotShield">0</strong>
+              </article>
+              <article>
+                <span>What-if</span>
+                <strong id="snapshotWhatIf">+0d</strong>
+              </article>
+            </div>
+          </section>
+
+          <section class="whatif-lab" aria-label="Interactive runway simulator">
+            <div class="whatif-copy">
+              <p class="section-label">What-If Lab</p>
+              <h2>Small cuts. More survival time.</h2>
+              <p id="whatIfMood">Move the slider to see how daily spending changes your runway instantly.</p>
+            </div>
+            <div class="scenario-beam" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="whatif-control">
+              <label for="whatIfSlider">
+                <span>Reduce daily spend by <strong id="whatIfCut">100</strong></span>
+                <input id="whatIfSlider" type="range" min="0" max="500" step="25" value="100" />
+              </label>
+            </div>
+            <div class="whatif-results">
+              <article>
+                <span>Runway gain</span>
+                <strong id="whatIfDays">+0 days</strong>
+              </article>
+              <article>
+                <span>Month saved</span>
+                <strong id="whatIfCash">0</strong>
+              </article>
+            </div>
+          </section>
+
+          <section class="decision-strip">
+            <article class="decision-card">
+              <span>One key insight</span>
+              <strong id="decisionTitle">Ready to guide your next money move</strong>
+              <p id="decisionText">Add your first few entries and LedgerLift will suggest the strongest action.</p>
+            </article>
+            <article class="decision-card action-focus">
+              <span>One clear action</span>
+              <strong id="decisionActionTitle">Start with today's fastest win</strong>
+              <p id="decisionActionText">Log one expense and check your runway shift instantly.</p>
+            </article>
+          </section>
+
+          <div class="hero-grid">
+            <section class="balance-panel">
+              <div class="balance-art" aria-hidden="true">
+                <div class="coin-stack"><span></span><span></span><span></span></div>
+                <div class="sparkline"><canvas id="miniCanvas" width="280" height="110"></canvas></div>
+              </div>
+              <p class="section-label">Net position</p>
+              <div class="balance-row">
+                <h2 id="netBalance">0</h2>
+                <span id="healthBadge">Stable</span>
+              </div>
+              <p id="cashflowSummary">Your month is loading.</p>
+              <div class="balance-actions">
+                <button data-filter-type="income" type="button">Income</button>
+                <button data-filter-type="expense" type="button">Spending</button>
+                <button data-filter-type="all" type="button">All activity</button>
+              </div>
+            </section>
+
+            <section class="insight-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="section-label">Smart insight</p>
+                  <h2 id="insightTitle">Reading your pattern</h2>
+                </div>
+                <span class="pulse-dot" aria-hidden="true"></span>
+              </div>
+              <p id="insightText">Your personalized insight will appear here.</p>
+              <div class="meter">
+                <span id="savingsMeter"></span>
+              </div>
+              <p class="microcopy" id="savingsCopy">Savings rate</p>
+            </section>
+          </div>
+
+          <section class="stats-grid" aria-label="Finance summary">
+            <article class="stat-card">
+              <span>Income</span>
+              <strong id="incomeTotal">0</strong>
+              <small id="incomeDelta">This month</small>
+            </article>
+            <article class="stat-card">
+              <span>Expenses</span>
+              <strong id="expenseTotal">0</strong>
+              <small id="expenseDelta">This month</small>
+            </article>
+            <article class="stat-card">
+              <span>Top Category</span>
+              <strong id="topCategory">-</strong>
+              <small id="topCategoryAmount">No spend yet</small>
+            </article>
+            <article class="stat-card">
+              <span>Projected Month End</span>
+              <strong id="projection">0</strong>
+              <small>Based on current pace</small>
+            </article>
+          </section>
+
+          <section class="coach-panel" aria-label="Savings coach">
+            <div class="panel-heading">
+              <div>
+                <p class="section-label">Money Coach</p>
+                <h2>Where to cut costs now</h2>
+              </div>
+              <span class="pulse-dot" aria-hidden="true"></span>
+            </div>
+            <div class="coach-grid">
+              <article class="coach-card">
+                <span>Daily safe spend</span>
+                <strong id="dailySafeSpend">0</strong>
+                <small id="dailySafeSpendHint">Calculated from your monthly pace</small>
+              </article>
+              <article class="coach-card">
+                <span>Potential month-end savings</span>
+                <strong id="potentialSavings">0</strong>
+                <small id="potentialSavingsHint">Based on small cuts in top categories</small>
+              </article>
+              <article class="coach-card">
+                <span>Most expensive habit</span>
+                <strong id="cutCategory">-</strong>
+                <small id="cutCategoryHint">Track more expenses to reveal this</small>
+              </article>
+            </div>
+            <div class="coach-actions" id="coachActions"></div>
+            <section class="challenge-panel" aria-label="Daily savings challenge">
+              <div class="panel-heading">
+                <div>
+                  <p class="section-label">Today Reset Challenge</p>
+                  <h2>3 tiny wins before day ends</h2>
+                </div>
+                <strong id="challengeProgress">0/3 done</strong>
+              </div>
+              <div class="challenge-list" id="challengeList"></div>
+            </section>
+            <section class="advantage-panel" aria-label="LedgerLift advantage">
+              <article class="coach-card">
+                <span>Savings Shield</span>
+                <strong id="shieldScore">0</strong>
+                <small id="shieldHint">Stability score from budget, streak, and saving behavior.</small>
+              </article>
+              <article class="coach-card">
+                <span>Next best move</span>
+                <strong id="nextBestMove">-</strong>
+                <small id="nextBestMoveHint">Smartest single action right now.</small>
+              </article>
+            </section>
+          </section>
+
+          <section class="intelligence-panel" aria-label="Financial intelligence center">
+            <div class="panel-heading">
+              <div>
+                <p class="section-label">Intelligence Center</p>
+                <h2>Forecasts, alerts, and recurring money patterns</h2>
+              </div>
+              <span class="ai-badge">Live</span>
+            </div>
+            <div class="intel-grid">
+              <article class="intel-card monthly-summary">
+                <span>Monthly summary</span>
+                <strong id="monthlySummaryTitle">Waiting for activity</strong>
+                <p id="monthlySummaryText">Add transactions to generate a monthly story.</p>
+              </article>
+              <article class="intel-card">
+                <span>Predictive spending</span>
+                <strong id="spendingPrediction">No forecast yet</strong>
+                <p id="spendingPredictionText">LedgerLift will compare this week, last week, and month pace.</p>
+              </article>
+              <article class="intel-card">
+                <span>Smart alert</span>
+                <strong id="smartAlertTitle">All clear</strong>
+                <p id="smartAlertText">Unusual spending signals appear here.</p>
+              </article>
+            </div>
+            <div class="intel-columns">
+              <article class="intel-list-card">
+                <div class="mini-heading">
+                  <span>Recurring & subscriptions</span>
+                  <strong id="recurringCount">0 found</strong>
+                </div>
+                <div class="intel-list" id="recurringList"></div>
+              </article>
+              <article class="intel-list-card">
+                <div class="mini-heading">
+                  <span>Category trends</span>
+                  <strong id="categoryTrendSummary">No trends yet</strong>
+                </div>
+                <div class="intel-list" id="categoryTrendList"></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="dashboard-grid">
+            <article class="chart-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="section-label">Cashflow</p>
+                  <h2>Last 8 weeks</h2>
+                </div>
+                <div class="segmented">
+                  <button class="is-selected" data-chart="bar" type="button">Bars</button>
+                  <button data-chart="line" type="button">Line</button>
+                </div>
+              </div>
+              <canvas id="cashflowCanvas" width="900" height="360"></canvas>
+            </article>
+
+            <article class="chart-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="section-label">Spending map</p>
+                  <h2>Where money goes</h2>
+                </div>
+              </div>
+              <div class="donut-wrap">
+                <canvas id="categoryCanvas" width="360" height="360"></canvas>
+                <div id="categoryLegend" class="legend"></div>
+              </div>
+            </article>
+          </section>
+        </section>
+
+        <section class="view" id="transactions" aria-label="Transactions">
+          <section class="tool-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="section-label">User settings</p>
+                <h2>Make LedgerLift yours</h2>
+              </div>
+            </div>
+            <div class="settings-strip">
+              <label>
+                <span>Name</span>
+                <input id="profileName" type="text" placeholder="Your name" />
+              </label>
+              <label>
+                <span>Currency</span>
+                <input id="currency" list="currencyList" maxlength="3" placeholder="USD" aria-describedby="currencyHint" />
+                <small id="currencyHint">Use any 3-letter currency code.</small>
+                <datalist id="currencyList">
+                  <option value="USD">US Dollar</option>
+                  <option value="INR">Indian Rupee</option>
+                  <option value="EUR">Euro</option>
+                  <option value="GBP">British Pound</option>
+                  <option value="JPY">Japanese Yen</option>
+                  <option value="AUD">Australian Dollar</option>
+                  <option value="CAD">Canadian Dollar</option>
+                  <option value="SGD">Singapore Dollar</option>
+                  <option value="AED">UAE Dirham</option>
+                  <option value="BRL">Brazilian Real</option>
+                  <option value="CHF">Swiss Franc</option>
+                  <option value="CNY">Chinese Yuan</option>
+                  <option value="HKD">Hong Kong Dollar</option>
+                  <option value="KRW">South Korean Won</option>
+                  <option value="MXN">Mexican Peso</option>
+                  <option value="NZD">New Zealand Dollar</option>
+                  <option value="ZAR">South African Rand</option>
+                </datalist>
+              </label>
+              <div class="sync-card">
+                <div>
+                  <span>Cloud sync</span>
+                  <strong id="syncStatus">Local mode</strong>
+                </div>
+                <div class="sync-controls">
+                  <input id="emailInput" type="email" placeholder="Email for sync" />
+                  <button class="ghost-button" id="signInButton" type="button">Sign in</button>
+                  <button class="ghost-button is-hidden" id="signOutButton" type="button">Sign out</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="tool-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="section-label">Quick capture</p>
+                <h2>Log an entry in seconds</h2>
+              </div>
+            </div>
+            <form id="transactionForm" class="transaction-form">
+              <input type="hidden" id="editingId" />
+              <label>
+                <span>Amount</span>
+                <input id="amount" type="number" min="1" step="1" placeholder="2500" required />
+              </label>
+              <label>
+                <span>Type</span>
+                <select id="type">
+                  <option value="expense">Expense</option>
+                  <option value="income">Income</option>
+                </select>
+              </label>
+              <label>
+                <span>Category</span>
+                <select id="category"></select>
+              </label>
+              <label>
+                <span>Description (optional)</span>
+                <input id="description" type="text" placeholder="Coffee, rent, salary..." />
+              </label>
+              <label>
+                <span>Date</span>
+                <input id="date" type="date" required />
+              </label>
+              <button class="primary-button form-submit" type="submit">Save</button>
+            </form>
+            <div class="quick-add-row" aria-label="Fast amount shortcuts">
+              <button type="button" data-quick-amount="5">+5</button>
+              <button type="button" data-quick-amount="10">+10</button>
+              <button type="button" data-quick-amount="25">+25</button>
+              <button type="button" data-quick-amount="50">+50</button>
+              <button type="button" data-quick-amount="100">+100</button>
+            </div>
+            <div class="quick-insight" id="quickInsight" aria-live="polite">
+              <strong id="quickInsightTitle">You are ready</strong>
+              <p id="quickInsightText">Your instant spending insight appears here after each entry.</p>
+            </div>
+            <p class="microcopy quick-cheer" id="quickCheer">Small steps every day beat big plans.</p>
+          </section>
+
+          <section class="tool-panel">
+            <div class="transaction-toolbar">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4a6 6 0 0 1 4.8 9.6l4.3 4.3-1.4 1.4-4.3-4.3A6 6 0 1 1 10 4Zm0 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/></svg>
+                <input id="searchInput" type="search" placeholder="Search transactions" />
+              </div>
+              <select id="filterType" aria-label="Filter type">
+                <option value="all">All</option>
+                <option value="income">Income</option>
+                <option value="expense">Expenses</option>
+              </select>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="transactionTable"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="budgets" aria-label="Budgets">
+          <section class="tool-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="section-label">Budget cockpit</p>
+                <h2>Set monthly limits</h2>
+              </div>
+            </div>
+            <div class="budget-grid" id="budgetGrid"></div>
+          </section>
+        </section>
+
+        <section class="view" id="goals" aria-label="Goals">
+          <section class="goal-hero">
+            <div>
+              <p class="section-label">Goals</p>
+              <h2>Build a future you can see.</h2>
+              <p>Track savings targets, emergency buffers, and dream purchases in one shared-friendly workspace.</p>
+            </div>
+            <form id="goalForm" class="goal-form">
+              <input id="goalName" type="text" placeholder="Goal name" required />
+              <input id="goalTarget" type="number" min="1" placeholder="Target" required />
+              <input id="goalSaved" type="number" min="0" placeholder="Saved" required />
+              <button class="primary-button" type="submit">Add Goal</button>
+            </form>
+          </section>
+          <section class="goals-grid" id="goalsGrid"></section>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
